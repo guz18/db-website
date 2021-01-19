@@ -514,9 +514,8 @@ def dropsession():
 def protected():
     if session:
         return render_template('protected.html')
-    return redirect('/home')
-
-
+    else:
+        return redirect('/home')
 
 
 # starting the app
