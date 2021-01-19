@@ -83,7 +83,7 @@ def register():
         session['department'] = department
         session['email'] = email
         #flash("User is created")
-        return redirect(url_for("login"))
+        return redirect("/login")
 
 @app.before_request
 def before_request():
@@ -108,7 +108,7 @@ def try1():
         data = cur.fetchall()
         cur.close()
         return render_template('try1.html', event = data)
-    return redirect(url_for('home'))
+    return redirect('/home')
 
 @app.route('/try2')
 def try2():
@@ -122,7 +122,7 @@ def try2():
         users = cur.fetchall() 
         cur.close()
         return render_template('try2.html', event = data, president = president, users = users)
-    return redirect(url_for('home'))    
+    return redirect('/home')    
 
 @app.route('/try3')
 def try3():
@@ -153,7 +153,7 @@ def try3():
         cur.execute('SELECT * FROM clubs WHERE clubPresident=%s', (session['user_id'],))
         cp = cur.fetchall()  
         return render_template('try3.html', user = user, last = last, club=club, dp = dp, cp=cp)
-    return redirect(url_for('home'))
+    return redirect('/home')
  
 
 
@@ -172,8 +172,8 @@ def add_event():
             cur.execute("INSERT INTO event (event_name, event_place, about_event,start_date,end_date) VALUES (%s,%s,%s,%s,%s)", (event_name, event_place, about_event,start_date,end_date))
             conn.commit()
             #flash('Event Added successfully')
-            return redirect(url_for('try1'))
-    return redirect(url_for('home'))
+            return redirect('/try1')
+    return redirect('/home')
 
 @app.route('/add_club', methods=['POST'])
 def add_club():
@@ -188,8 +188,8 @@ def add_club():
             cur.execute("INSERT INTO clubs (clubName,clubPresident,club_place,club_description) VALUES (%s,%s,%s,%s)", (clubName,clubPresident,club_place,club_description))
             conn.commit()
             #flash('Club Added successfully')
-            return redirect(url_for('try2'))
-    return redirect(url_for('home'))
+            return redirect('/try2')
+    return redirect('/home')
 
 
 
@@ -202,7 +202,7 @@ def get_event(id):
         cur.close()
         print(data[0])
         return render_template('edit.html', event = data[0])
-    return redirect(url_for('home'))
+    return redirect('/home')
 
 @app.route('/edit2/<id>', methods = ['POST', 'GET'])
 def get_club(id):
@@ -214,7 +214,7 @@ def get_club(id):
         president = cur.fetchall() 
         cur.close()
         return render_template('edit2.html', event = data[0], president = president)  
-    return redirect(url_for('home'))
+    return redirect('/home')
 
 @app.route('/edit3/<id>', methods = ['POST', 'GET'])
 def get_user(id):
@@ -224,7 +224,7 @@ def get_user(id):
         user = cur.fetchone()
         cur.close()
         return render_template('edit3.html', event = user)  
-    return redirect(url_for('home'))
+    return redirect('/home')
  
 @app.route('/update/<id>', methods=['POST'])
 def update_event(id):
@@ -248,8 +248,8 @@ def update_event(id):
             """, (event_name, event_place, about_event, start_date,end_date, id))
             #flash('Event Updated Successfully')
             conn.commit()
-            return redirect(url_for('try1'))
-    return redirect(url_for('home'))
+            return redirect('/try1')
+    return redirect('/home')
 
 
 @app.route('/update2/<id>', methods=['POST'])
@@ -272,8 +272,8 @@ def update_club(id):
             """, (clubName, clubPresident, club_place,club_description, id))
             #flash('Club Updated Successfully')
             conn.commit()
-            return redirect(url_for('try2'))
-    return redirect(url_for('home'))
+            return redirect('/try2')
+    return redirect('/home')
  
 @app.route('/update3/<id>', methods=['POST'])
 def update_user(id):
@@ -297,8 +297,8 @@ def update_user(id):
             """, (firstName, lastName, email, department,username, id))
             #flash('Event Updated Successfully')
             conn.commit()
-            return redirect(url_for('try3'))
-    return redirect(url_for('home'))
+            return redirect('/try3')
+    return redirect('/home')
 
 
 
@@ -310,8 +310,8 @@ def delete_event(id):
         cur.execute('DELETE FROM event WHERE id = {0}'.format(id))
         conn.commit()
         #flash('Event Removed Successfully')
-        return redirect(url_for('try1'))
-    return redirect(url_for('home'))
+        return redirect('/try1')
+    return redirect('/home')
 
 @app.route('/delete2/<string:id>', methods = ['POST','GET'])
 def delete_club(id):
@@ -321,8 +321,8 @@ def delete_club(id):
         cur.execute('DELETE FROM clubs WHERE club_id = {0}'.format(id))
         conn.commit()
         #flash('Club Removed Successfully')
-        return redirect(url_for('try2'))    
-    return redirect(url_for('home'))
+        return redirect('/try2')
+    return redirect('/home')
 
 @app.route('/delete3/<string:id>', methods = ['POST','GET'])
 def delete_user(id):
@@ -333,8 +333,8 @@ def delete_user(id):
         conn.commit()
         #flash('User Removed Successfully')
         dropsession()
-        return redirect(url_for('home'))  
-    return redirect(url_for('home'))  
+        return redirect('/home')
+    return redirect('/home')  
 
 @app.route('/like/<string:id>', methods = ['POST','GET'])
 def like(id):
@@ -345,7 +345,7 @@ def like(id):
         temp = cur.fetchone()
         if temp:
             #flash('You already liked this event')
-            return redirect(url_for('try1'))  
+            return redirect('/try1')  
         else:
             cur.execute("INSERT INTO event_likes (event_id, user_id) VALUES (%s,%s)", (id, session['user_id']))
             conn.commit()
@@ -363,8 +363,8 @@ def like(id):
                 WHERE id = %s
             """, (temp['event_name'], temp['event_place'], temp['about_event'], temp['start_date'],temp['end_date'],temp['likeNumber']+1, id))
             conn.commit()
-            return redirect(url_for('try1'))  
-    return redirect(url_for('home'))  
+            return redirect('/try1')
+    return redirect('/home')
 
 @app.route('/unlike/<string:id>', methods = ['POST','GET'])
 def unlike(id):
@@ -395,11 +395,11 @@ def unlike(id):
                 WHERE id = %s
             """, (temp['event_name'], temp['event_place'], temp['about_event'], temp['start_date'],temp['end_date'],temp['likeNumber']-1, id))
             conn.commit()
-            return redirect(url_for('try1'))   
+            return redirect('/try1')  
         else:
             #flash('You can not unlike an event that you did not like before')
-            return redirect(url_for('try1'))
-    return redirect(url_for('home'))  
+            return redirect('/try1')
+    return redirect('/home')
 
 
 
@@ -412,7 +412,7 @@ def like2(id):
         temp = cur.fetchone()
         if temp:
             #flash('You already liked this club')
-            return redirect(url_for('try2'))  
+            return redirect('/try2')
         else:
             cur.execute("INSERT INTO club_likes (club_id, user_id) VALUES (%s,%s)", (id, session['user_id']))
             conn.commit()
@@ -429,8 +429,8 @@ def like2(id):
                 WHERE club_id = %s
             """, (temp['clubName'], temp['clubLikes']+1, temp['clubPresident'], temp['club_place'],temp['club_description'], id))
             conn.commit()
-            return redirect(url_for('try2'))  
-    return redirect(url_for('home'))  
+            return redirect('/try2')
+    return redirect('/home')  
 
 @app.route('/unlike2/<string:id>', methods = ['POST','GET'])
 def unlike2(id):
@@ -460,11 +460,11 @@ def unlike2(id):
                 WHERE club_id = %s
             """, (temp['clubName'], temp['clubLikes']-1, temp['clubPresident'], temp['club_place'],temp['club_description'], id))
             conn.commit()
-            return redirect(url_for('try2'))   
+            return redirect('/try2')
         else:
             #flash('You can not unlike an event that you did not like before')
-            return redirect(url_for('try2'))
-    return redirect(url_for('home'))  
+            return redirect('/try2')
+    return redirect('/home')
 
 
 
@@ -485,7 +485,7 @@ def userPage(id):
         cur.execute(sql,(id,))
         last = cur.fetchall()
         return render_template('user.html', user = user, last = last) 
-    return redirect(url_for('home'))  
+    return redirect('/home')  
 
 
 
