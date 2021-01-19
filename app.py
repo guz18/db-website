@@ -17,10 +17,10 @@ app.config["app"]=app
 app.config["mysql"]=mysql
 
 # MySQL configurations
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '1234'
-app.config['MYSQL_DB'] = 'schooltables'
-app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'b039c14e7ece2e'
+app.config['MYSQL_PASSWORD'] = 'ae243740'
+app.config['MYSQL_DB'] = 'heroku_148a102e5bd8be9'
+app.config['MYSQL_HOST'] = 'eu-cdbr-west-03.cleardb.net'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 @app.route('/')
