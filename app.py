@@ -507,7 +507,7 @@ def userPage(id):
 def dropsession():
     session.pop('user', None)
     session.clear()
-    return redirect('\home')
+    return redirect('/home')
 
 
 @app.route('/protected')
