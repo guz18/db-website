@@ -23,7 +23,9 @@ app.config['MYSQL_DB'] = 'heroku_148a102e5bd8be9'
 app.config['MYSQL_HOST'] = 'eu-cdbr-west-03.cleardb.net'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
+
 @app.route('/')
+@app.route('/home')
 def home():
     session.clear()
     return render_template('home.html')   
