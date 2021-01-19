@@ -500,7 +500,7 @@ def dropsession():
 def protected():
     if check():
         return render_template('protected.html')
-    return redirect(url_for('home'))
+    return redirect('/home')
 
 
 def check():
