@@ -27,7 +27,6 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 @app.route('/')
 @app.route('/home')
 def home():
-    session.clear()
     return render_template('home.html')   
 
 
@@ -98,7 +97,7 @@ def logout():
 
 @app.route('/try1')
 def try1():
-    if check():
+    if session:
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT * FROM event')
         data = cur.fetchall()
@@ -109,7 +108,7 @@ def try1():
 
 @app.route('/try2')
 def try2():
-    if check():
+    if session:
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT * FROM clubs')
         data = cur.fetchall()
@@ -124,7 +123,7 @@ def try2():
 
 @app.route('/try3')
 def try3():
-    if check():
+    if session:
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT * FROM users WHERE username=%s', (session['username'],))
         user = cur.fetchone()   
@@ -159,7 +158,7 @@ def try3():
 
 @app.route('/add_contact', methods=['POST'])
 def add_event():
-    if check():
+    if session:
         conn = mysql.connection
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         if request.method == 'POST':
@@ -177,7 +176,7 @@ def add_event():
 
 @app.route('/add_club', methods=['POST'])
 def add_club():
-    if check():
+    if session:
         conn = mysql.connection
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         if request.method == 'POST':
@@ -196,7 +195,7 @@ def add_club():
 
 @app.route('/edit/<id>', methods = ['POST', 'GET'])
 def get_event(id):
-    if check():
+    if session:
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT * FROM event WHERE id = %s', (id))
         data = cur.fetchall()
@@ -208,7 +207,7 @@ def get_event(id):
 
 @app.route('/edit2/<id>', methods = ['POST', 'GET'])
 def get_club(id):
-    if check():
+    if session:
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT * FROM clubs WHERE club_id = %s', (id))
         data = cur.fetchall()
@@ -221,7 +220,7 @@ def get_club(id):
 
 @app.route('/edit3/<id>', methods = ['POST', 'GET'])
 def get_user(id):
-    if check():
+    if session:
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT * FROM users WHERE username=%s', (session['username'],))
         user = cur.fetchone()
@@ -232,7 +231,7 @@ def get_user(id):
  
 @app.route('/update/<id>', methods=['POST'])
 def update_event(id):
-    if check():
+    if session:
         if request.method == 'POST':
             event_name = request.form['event_name']
             event_place = request.form['event_place']
@@ -259,7 +258,7 @@ def update_event(id):
 
 @app.route('/update2/<id>', methods=['POST'])
 def update_club(id):
-    if check():
+    if session:
         if request.method == 'POST':
             clubName = request.form['clubName']
             clubPresident = request.form['clubPresident']
@@ -283,7 +282,7 @@ def update_club(id):
  
 @app.route('/update3/<id>', methods=['POST'])
 def update_user(id):
-    if check():
+    if session:
         if request.method == 'POST':
             firstName = request.form['firstName']
             lastName = request.form['lastName']
@@ -311,7 +310,7 @@ def update_user(id):
 
 @app.route('/delete/<string:id>', methods = ['POST','GET'])
 def delete_event(id):
-    if check():
+    if session:
         conn = mysql.connection
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('DELETE FROM event WHERE id = {0}'.format(id))
@@ -323,7 +322,7 @@ def delete_event(id):
 
 @app.route('/delete2/<string:id>', methods = ['POST','GET'])
 def delete_club(id):
-    if check():
+    if session:
         conn = mysql.connection
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('DELETE FROM clubs WHERE club_id = {0}'.format(id))
@@ -335,7 +334,7 @@ def delete_club(id):
 
 @app.route('/delete3/<string:id>', methods = ['POST','GET'])
 def delete_user(id):
-    if check():
+    if session:
         conn = mysql.connection
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('DELETE FROM users WHERE user_id = {0}'.format(id))
@@ -348,7 +347,7 @@ def delete_user(id):
 
 @app.route('/like/<string:id>', methods = ['POST','GET'])
 def like(id):
-    if check():
+    if session:
         conn = mysql.connection
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT * FROM event_likes WHERE event_id=%s AND user_id=%s', (id,session['user_id'],))
@@ -379,7 +378,7 @@ def like(id):
 
 @app.route('/unlike/<string:id>', methods = ['POST','GET'])
 def unlike(id):
-    if check():
+    if session:
         conn = mysql.connection
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT * FROM event_likes WHERE event_id=%s AND user_id=%s', (id,session['user_id'],))
@@ -417,7 +416,7 @@ def unlike(id):
 
 @app.route('/like2/<string:id>', methods = ['POST','GET'])
 def like2(id):
-    if check():
+    if session:
         conn = mysql.connection
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT * FROM club_likes WHERE club_id=%s AND user_id=%s', (id,session['user_id'],))
@@ -447,7 +446,7 @@ def like2(id):
 
 @app.route('/unlike2/<string:id>', methods = ['POST','GET'])
 def unlike2(id):
-    if check():
+    if session:
         conn = mysql.connection
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT * FROM club_likes WHERE club_id=%s AND user_id=%s', (id,session['user_id'],))
@@ -485,7 +484,7 @@ def unlike2(id):
 
 @app.route('/userPage/<string:id>', methods = ['POST','GET'])
 def userPage(id):
-    if check():
+    if session:
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT * FROM users WHERE user_id = {0}'.format(id))
         user = cur.fetchone()
@@ -513,15 +512,10 @@ def dropsession():
 
 @app.route('/protected')
 def protected():
-    if check():
+    if session:
         return render_template('protected.html')
     return redirect('/home')
 
-
-def check():
-    if session:
-        return True
-    return False
 
 
 
