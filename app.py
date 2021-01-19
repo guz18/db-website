@@ -510,5 +510,4 @@ def check():
 
 # starting the app
 if __name__ == "__main__":
-    app.secret_key = "012#GoshsadsSfjd(*)*&"
-    app.run(port=5000, debug=True)
+    app.run()
