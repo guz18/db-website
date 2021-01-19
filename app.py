@@ -9,16 +9,19 @@ import sys
 import mysql.connector
 import pymysql.cursors
  
+
 app = Flask(__name__)
-app.secret_key = os.urandom(24)   
+app.secret_key = os.urandom(24) 
+mysql = MySQL(app)  
+app.config["app"]=app
+app.config["mysql"]=mysql
+
 # MySQL configurations
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '1234'
 app.config['MYSQL_DB'] = 'schooltables'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-mysql = MySQL(app)
- 
 
 @app.route('/')
 def home():
@@ -510,4 +513,5 @@ def check():
 
 # starting the app
 if __name__ == "__main__":
+    app.secret_key = "012#GoshsadsSfjd(*)*&"
     app.run()

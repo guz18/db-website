@@ -1,4 +1,5 @@
-appdirs          
+appdirs
+gunicorn          
 astroid        
 backcall         
 bcrypt           
