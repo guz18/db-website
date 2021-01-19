@@ -85,12 +85,6 @@ def register():
         #flash("User is created")
         return redirect("/login")
 
-@app.before_request
-def before_request():
-   g.user = None 
-   if 'user' in session:
-       g.user = session['user']
-
 
 
 @app.route('/logout')
@@ -108,7 +102,8 @@ def try1():
         data = cur.fetchall()
         cur.close()
         return render_template('try1.html', event = data)
-    return redirect('/home')
+    else:
+        return redirect('/home')
 
 @app.route('/try2')
 def try2():
@@ -122,7 +117,8 @@ def try2():
         users = cur.fetchall() 
         cur.close()
         return render_template('try2.html', event = data, president = president, users = users)
-    return redirect('/home')    
+    else:
+        return redirect('/home')    
 
 @app.route('/try3')
 def try3():
@@ -153,7 +149,8 @@ def try3():
         cur.execute('SELECT * FROM clubs WHERE clubPresident=%s', (session['user_id'],))
         cp = cur.fetchall()  
         return render_template('try3.html', user = user, last = last, club=club, dp = dp, cp=cp)
-    return redirect('/home')
+    else:
+        return redirect('/home')
  
 
 
@@ -173,7 +170,8 @@ def add_event():
             conn.commit()
             #flash('Event Added successfully')
             return redirect('/try1')
-    return redirect('/home')
+    else:
+        return redirect('/home')
 
 @app.route('/add_club', methods=['POST'])
 def add_club():
@@ -189,7 +187,8 @@ def add_club():
             conn.commit()
             #flash('Club Added successfully')
             return redirect('/try2')
-    return redirect('/home')
+    else:
+        return redirect('/home')
 
 
 
@@ -202,7 +201,8 @@ def get_event(id):
         cur.close()
         print(data[0])
         return render_template('edit.html', event = data[0])
-    return redirect('/home')
+    else:
+        return redirect('/home')
 
 @app.route('/edit2/<id>', methods = ['POST', 'GET'])
 def get_club(id):
@@ -213,8 +213,9 @@ def get_club(id):
         cur.execute('SELECT user_id,firstName,lastName FROM users') 
         president = cur.fetchall() 
         cur.close()
-        return render_template('edit2.html', event = data[0], president = president)  
-    return redirect('/home')
+        return render_template('edit2.html', event = data[0], president = president)
+    else:  
+        return redirect('/home')
 
 @app.route('/edit3/<id>', methods = ['POST', 'GET'])
 def get_user(id):
@@ -224,7 +225,8 @@ def get_user(id):
         user = cur.fetchone()
         cur.close()
         return render_template('edit3.html', event = user)  
-    return redirect('/home')
+    else:
+        return redirect('/home')
  
 @app.route('/update/<id>', methods=['POST'])
 def update_event(id):
@@ -249,7 +251,8 @@ def update_event(id):
             #flash('Event Updated Successfully')
             conn.commit()
             return redirect('/try1')
-    return redirect('/home')
+    else:
+        return redirect('/home')
 
 
 @app.route('/update2/<id>', methods=['POST'])
@@ -273,7 +276,8 @@ def update_club(id):
             #flash('Club Updated Successfully')
             conn.commit()
             return redirect('/try2')
-    return redirect('/home')
+    else:
+        return redirect('/home')
  
 @app.route('/update3/<id>', methods=['POST'])
 def update_user(id):
@@ -298,7 +302,8 @@ def update_user(id):
             #flash('Event Updated Successfully')
             conn.commit()
             return redirect('/try3')
-    return redirect('/home')
+    else:
+        return redirect('/home')
 
 
 
@@ -311,7 +316,8 @@ def delete_event(id):
         conn.commit()
         #flash('Event Removed Successfully')
         return redirect('/try1')
-    return redirect('/home')
+    else:
+        return redirect('/home')
 
 @app.route('/delete2/<string:id>', methods = ['POST','GET'])
 def delete_club(id):
@@ -322,7 +328,8 @@ def delete_club(id):
         conn.commit()
         #flash('Club Removed Successfully')
         return redirect('/try2')
-    return redirect('/home')
+    else:
+        return redirect('/home')
 
 @app.route('/delete3/<string:id>', methods = ['POST','GET'])
 def delete_user(id):
@@ -334,7 +341,8 @@ def delete_user(id):
         #flash('User Removed Successfully')
         dropsession()
         return redirect('/home')
-    return redirect('/home')  
+    else:
+        return redirect('/home')  
 
 @app.route('/like/<string:id>', methods = ['POST','GET'])
 def like(id):
@@ -364,7 +372,8 @@ def like(id):
             """, (temp['event_name'], temp['event_place'], temp['about_event'], temp['start_date'],temp['end_date'],temp['likeNumber']+1, id))
             conn.commit()
             return redirect('/try1')
-    return redirect('/home')
+    else:
+        return redirect('/home')
 
 @app.route('/unlike/<string:id>', methods = ['POST','GET'])
 def unlike(id):
@@ -399,7 +408,8 @@ def unlike(id):
         else:
             #flash('You can not unlike an event that you did not like before')
             return redirect('/try1')
-    return redirect('/home')
+    else:
+        return redirect('/home')
 
 
 
@@ -430,7 +440,8 @@ def like2(id):
             """, (temp['clubName'], temp['clubLikes']+1, temp['clubPresident'], temp['club_place'],temp['club_description'], id))
             conn.commit()
             return redirect('/try2')
-    return redirect('/home')  
+    else:
+        return redirect('/home')  
 
 @app.route('/unlike2/<string:id>', methods = ['POST','GET'])
 def unlike2(id):
@@ -464,7 +475,8 @@ def unlike2(id):
         else:
             #flash('You can not unlike an event that you did not like before')
             return redirect('/try2')
-    return redirect('/home')
+    else:
+        return redirect('/home')
 
 
 
@@ -485,7 +497,8 @@ def userPage(id):
         cur.execute(sql,(id,))
         last = cur.fetchall()
         return render_template('user.html', user = user, last = last) 
-    return redirect('/home')  
+    else:
+        return redirect('/home')  
 
 
 
