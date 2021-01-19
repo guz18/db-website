@@ -8,22 +8,10 @@ import os
 import sys
 import mysql.connector
 import pymysql.cursors
- 
+import config
 
-app = Flask(__name__)
-app.secret_key = os.urandom(24) 
-mysql = MySQL(app)  
-app.config["app"]=app
-app.config["mysql"]=mysql
-
-# MySQL configurations
-app.config['MYSQL_USER'] = 'b039c14e7ece2e'
-app.config['MYSQL_PASSWORD'] = 'ae243740'
-app.config['MYSQL_DB'] = 'heroku_148a102e5bd8be9'
-app.config['MYSQL_HOST'] = 'eu-cdbr-west-03.cleardb.net'
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-
-
+app = config.app
+mysql = config.mysql
 @app.route('/')
 @app.route('/home')
 def home():
