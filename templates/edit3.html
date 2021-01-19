@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block body %}
+ 
+  <div class="row1">
+    <div class="col-md-4 offset-md-4">
+      <div class="card card-body">
+        <form action="/update3/{{event.user_id}}" method="POST">
+          <div class="form-group">
+            <input type="text" name="firstName" value="{{event.firstName}}" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="lastName" value="{{event.lastName}}" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="email" value="{{event.email}}" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="department" value="{{event.department}}" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="username" value="{{event.username}}" class="form-control">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+ 
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block body %}
+ <div class="row1"><h3>ADD AN EVENT</h3></div>
+  <div class="row">
+    <div class="col-md-4">
+      <style>
+      </style>
+      {% with messages = get_flashed_messages()  %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+      <div class="card card-body">
+        <form action="{{url_for('add_event')}}" method="POST">
+          <div class="form-group">
+            <input type="text" class="form-control" name="event_name" placeholder="Event Name">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="event_place" placeholder="Event Place">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="about_event" placeholder="About Event">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="start_date" placeholder="Start Date">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="end_date" placeholder="End Date">
+          </div>
+          <button class="btn btn-primary btn-block">
+            Save 
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <table id="example" class="table table-striped table-bordered" style="width:90%">
+        <thead>
+          <tr>
+            <td>Event Name</td>
+            <td>Event Place</td>
+            <td>About Event</td>
+            <td>Number of Likes</td>
+            <td>Start Date</td>
+            <td>End Date</td>
+            <td>Action</td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for data in event %}
+          <tr>
+            <td>{{data.event_name}}</td>
+            <td>{{data.event_place}}</td>
+            <td>{{data.about_event}}</td>
+            <td>{{data.likeNumber}}</td>
+            <td>{{data.start_date}}</td>
+            <td>{{data.end_date}}</td>
+            <td width="130">
+              <a href="/edit/{{data.id}}" class="btn btn-secondary btn-sm">edit</a>
+              <a href="/delete/{{data.id}}" class="btn btn-danger btn-delete btn-sm">delete</a>
+              <a href="/like/{{data.id}}" class="btn btn-sm">like</a>
+              <a href="/unlike/{{data.id}}" class="btn btn-sm">unlike</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+ 
+{% endblock %}

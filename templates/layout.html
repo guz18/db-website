@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
+ 
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+<style>
+body {
+      font-family: Arial, Helvetica, sans-serif;
+}
+
+body::after {
+  content: "";
+    opacity: 0.03;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: -1;   
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    background-size:30% 80%;
+    background-position: center;
+    background-image:url({{url_for('static',filename ='builtin/logo.png')}})
+
+
+  }
+
+  .text-center1 {
+     position: fixed;
+     left: 0;
+     bottom: 0;
+     width: 100%;
+     text-align: left;
+    font-weight: bold;
+  }
+
+.abc{
+  margin-bottom: 20%;
+}
+  .row2{
+  margin-top:5%;
+  margin-left: 4%;
+}
+.row1{
+  margin-top:5%;
+  margin-left: 9%;
+}
+.row4{
+  margin-top:5%;
+  margin-left: 5%;
+}
+.row3{
+  margin-left: 5%;
+
+}
+.row{
+  margin-left: 1%;
+}
+
+.navbar {
+  width: 100%;
+  background-color: rgb(88, 81, 81);
+  overflow: auto;
+  position: fixed;
+  z-index: 9;
+  top:0;
+}
+
+.navbar a {
+  float: left;
+  padding: 5px;
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.navbar a:hover {
+  background-color: #000;
+}
+
+.active {
+  background-color: #9989b6;
+}
+
+@media screen and (max-width: 500px) {
+  .navbar a {
+    float: none;
+    display: block;
+  }
+}
+
+  .text-center {
+     position: fixed;
+     left: 0;
+     bottom: 0;
+     width: 100%;
+     text-align: center;
+  }
+</style>
+
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+      <a href="/protected" class="navbar-brand">ON-CAMPUS EVENT SCHEDULER</a>
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarMenu">
+          <ul class="navbar-nav">
+              <li class="nav-item">
+                  <a href="/try1" class="nav-link">Events</a>
+              </li>
+              <li class="nav-item">
+                  <a href="/try2" class="nav-link">Clubs</a>
+              </li>  
+              <li class="nav-item">
+                <a href="/try3" class="nav-link"> {{session['username']}}</a>
+            </li>
+            <li class="nav-item">
+              <a href="/dropsession" class="nav-link"> Logout </a>
+          </li>
+          </ul>
+      </div>
+  </nav>
+
+  {% block body %}
+  {% endblock %}      
+      <script>
+        const btnDelete= document.querySelectorAll('.btn-delete');
+        if(btnDelete) {
+          const btnArray = Array.from(btnDelete);
+          btnArray.forEach((btn) => {
+            btn.addEventListener('click', (e) => {
+              if(!confirm('Are you sure you want to delete it?')){
+                e.preventDefault();
+              }
+            });
+          })
+        }
+         
+        $(document).ready(function() {
+            $('#example').DataTable({     
+              "aLengthMenu": [[3, 5, 10, 25, -1], [3, 5, 10, 25, "All"]],
+                "iDisplayLength": 3
+               } 
+            );
+        } );
+         
+        </script>
+
+  <!-- Copyright -->
+  <div class="text-center1" style="background-color: rgba(0, 0, 0, 0.116)">
+    © 2021 Copyright:
+    <a class="text-dark">GÖKSU GÜZ</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+  </body>
+</html>

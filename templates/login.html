@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Bootstrap Sign in Form with Icons</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<style>
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body::after {
+    content: "";
+    opacity: 0.6;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: -1;   
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    background-size:cover;
+    background-image:url({{url_for('static',filename ='builtin/background1.jpg')}})
+  }
+
+  
+.navbar{
+    position: fixed;
+    width: 100%;
+    height:6%;
+}
+.navbar-brand{
+    text-align: left;
+    position: fixed;
+    width: 100%;
+
+}
+
+
+  .text-center{
+    text-align: center;
+    margin-top: 10%;
+    
+  } 
+
+  .text-center1 {
+     position: fixed;
+     left: 0;
+     bottom: 0;
+     width: 100%;
+     text-align: left;
+    font-weight: bold;
+  }
+
+  .login-form {
+    width: 340px;
+    position:absolute;
+    top:40%;
+    left:45%;
+    margin-top:-50px; 
+    margin-left:-100px; 
+}
+
+.login-form form a:hover {
+	text-decoration: underline;
+}
+
+.login-form form {        
+    margin-bottom: 15px;
+    border-radius: 3px;
+    background: #f7f7f7;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    padding: 25px;
+}
+.login-form h2 {
+    margin: 0 0 300px;
+}
+.form-control, .btn {
+    min-height: 38px;
+    border-radius: 2px;
+}
+.input-group-addon .fa {
+    font-size: 18px;
+}
+.btn {        
+  background: #19aa8d !important;
+    font-size: 15px;
+    font-weight: bold;
+}
+.bottom-action {
+  	font-size: 14px;
+}
+
+
+a {
+    color: #19aa8d;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover 
+{
+     color:#19aa8d; 
+     text-decoration:none; 
+     cursor:pointer;  
+}
+
+.alert-error {
+        padding: 8px;
+        background-color: rgb(255, 0, 0);
+        color: white;
+      }
+
+.signUpFirst{
+  text-align: center;
+  font-family:Helvetica,sans-serif;
+}
+  </style>
+  
+</head>
+<body>
+
+    
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %} 
+        <div class="alert-error">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+    <!-- Image and text -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="/">
+    ITU On-Campus Event Scheduler
+  </a>
+</nav>
+
+
+  <div class="login-form">
+    <form action="/login" method="POST">
+        <div class="form-group">
+        	<div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <span class="fa fa-user"></span>
+                    </span>                    
+                </div>
+                <input type="text" class="form-control" name="username" placeholder="Username" required="required">
+            </div>
+        </div>
+		<div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fa fa-lock"></i>
+                    </span>                    
+                </div>
+                <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+            </div>
+        </div>        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </div>
+        <p class="text-center">Don't have an account! <a href="register">Sign up here</a></p>     
+    </form>
+</div>
+
+
+  <!-- Copyright -->
+  <div class="text-center1" style="background-color: rgba(0, 0, 0, 0.116)">
+    © 2021 Copyright:
+    <a class="text-dark">GÖKSU GÜZ</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+<!-- Footer -->
+  </body>
+</html>

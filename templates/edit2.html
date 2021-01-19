@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+ 
+  <div class="row1">
+    <div class="col-md-4 offset-md-4">
+      <div class="card card-body">
+        <form action="/update2/{{event.club_id}}" method="POST">
+          <div class="form-group">
+            <input type="text" name="clubName" value="{{event.clubName}}" class="form-control">
+          </div>
+          <p style="font-family:verdana">
+            President Of the Club:<SELECT name="clubPresident" style="font-family:verdana">
+            {% for user in president %}
+              <OPTION value={{user['user_id']}}>{{user['firstName']}} {{user['lastName']}}</OPTION>
+            {% endfor %}
+            </SELECT>
+            </p>
+          <div class="form-group">
+            <input type="text" name="club_place" value="{{event.club_place}}" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="club_description" value="{{event.club_description}}" class="form-control">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+ 
+{% endblock %}
