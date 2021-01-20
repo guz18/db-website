@@ -27,7 +27,7 @@ def login():
         cur.execute('SELECT * FROM users WHERE username=%s', (username,))
         user = cur.fetchone()
         if user is None:
-            #flash("Error, password or user not match")
+            flash("Error, password or user not match")
             return render_template('login.html')
         elif len(user)>0:
             if bcrypt.hashpw(password,user['password'].encode('utf-8')) == user['password'].encode('utf-8'):
@@ -39,10 +39,10 @@ def login():
                 session['email'] = user['email']
                 return redirect('/protected')
             else:
-                #flash("Error, password or user not match")
+                flash("Error, password or user not match")
                 return render_template('login.html')
         else:
-                #flash("Error, password or user not match")
+                flash("Error, password or user not match")
                 return render_template('login.html')
         cur.close()
     else:
@@ -71,7 +71,7 @@ def register():
         session['username'] = username
         session['department'] = department
         session['email'] = email
-        #flash("User is created")
+        flash("User is created")
         return redirect("/login")
 
 
@@ -157,7 +157,7 @@ def add_event():
             end_date = request.form['end_date']
             cur.execute("INSERT INTO event (event_name, event_place, about_event,start_date,end_date) VALUES (%s,%s,%s,%s,%s)", (event_name, event_place, about_event,start_date,end_date))
             conn.commit()
-            #flash('Event Added successfully')
+            flash('Event Added successfully')
             return redirect('/try1')
     else:
         return redirect('/home')
@@ -174,7 +174,7 @@ def add_club():
             club_description = request.form['club_description']
             cur.execute("INSERT INTO clubs (clubName,clubPresident,club_place,club_description) VALUES (%s,%s,%s,%s)", (clubName,clubPresident,club_place,club_description))
             conn.commit()
-            #flash('Club Added successfully')
+            flash('Club Added successfully')
             return redirect('/try2')
     else:
         return redirect('/home')
@@ -185,7 +185,7 @@ def add_club():
 def get_event(id):
     if session:
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute('SELECT * FROM event WHERE id = %s', (id))
+        cur.execute('SELECT * FROM event WHERE id = %s', (id,))
         data = cur.fetchall()
         cur.close()
         print(data[0])
@@ -237,7 +237,7 @@ def update_event(id):
                     end_date = %s
                 WHERE id = %s
             """, (event_name, event_place, about_event, start_date,end_date, id))
-            #flash('Event Updated Successfully')
+            flash('Event Updated Successfully')
             conn.commit()
             return redirect('/try1')
     else:
@@ -262,7 +262,7 @@ def update_club(id):
                     club_description = %s
                 WHERE club_id = %s
             """, (clubName, clubPresident, club_place,club_description, id))
-            #flash('Club Updated Successfully')
+            flash('Club Updated Successfully')
             conn.commit()
             return redirect('/try2')
     else:
@@ -288,7 +288,7 @@ def update_user(id):
                     username = %s
                 WHERE user_id = %s
             """, (firstName, lastName, email, department,username, id))
-            #flash('Event Updated Successfully')
+            flash('Event Updated Successfully')
             conn.commit()
             return redirect('/try3')
     else:
@@ -305,7 +305,7 @@ def delete_event(id):
         conn.commit()
         cur.execute('DELETE FROM event_likes WHERE event_id = {0}'.format(id))
         conn.commit()
-        #flash('Event Removed Successfully')
+        flash('Event Removed Successfully')
         return redirect('/try1')
     else:
         return redirect('/home')
@@ -319,7 +319,7 @@ def delete_club(id):
         conn.commit()
         cur.execute('DELETE FROM club_likes WHERE club_id = {0}'.format(id))
         conn.commit()
-        #flash('Club Removed Successfully')
+        flash('Club Removed Successfully')
         return redirect('/try2')
     else:
         return redirect('/home')
@@ -335,7 +335,7 @@ def delete_user(id):
         conn.commit()
         cur.execute('DELETE FROM club_likes WHERE user_id = {0}'.format(id))
         conn.commit()
-        #flash('User Removed Successfully')
+        flash('User Removed Successfully')
         dropsession()
         return redirect('/home')
     else:
@@ -349,14 +349,14 @@ def like(id):
         cur.execute('SELECT * FROM event_likes WHERE event_id=%s AND user_id=%s', (id,session['user_id'],))
         temp = cur.fetchone()
         if temp:
-            #flash('You already liked this event')
+            flash('You already liked this event')
             return redirect('/try1')  
         else:
             cur.execute("INSERT INTO event_likes (event_id, user_id) VALUES (%s,%s)", (id, session['user_id']))
             conn.commit()
             cur.execute('SELECT * FROM event WHERE id=%s', (id,))
             temp = cur.fetchone()
-            #flash('You liked the {0} event'.format(temp['event_name']))
+            flash('You liked the {0} event'.format(temp['event_name']))
             cur.execute("""
                 UPDATE event
                 SET event_name = %s,
@@ -382,7 +382,7 @@ def unlike(id):
         if temp:
             cur.execute('SELECT * FROM event WHERE id=%s', (id,))
             temp = cur.fetchone()
-            #flash('You unliked the {0} event'.format(temp['event_name']))
+            flash('You unliked the {0} event'.format(temp['event_name']))
             cur.execute('SELECT * FROM event_likes WHERE event_id=%s AND user_id=%s', (id,session['user_id'],))
             temp = cur.fetchone()
             cur.execute('DELETE FROM event_likes WHERE id = {0}'.format(temp['id']))
@@ -403,7 +403,7 @@ def unlike(id):
             conn.commit()
             return redirect('/try1')  
         else:
-            #flash('You can not unlike an event that you did not like before')
+            flash('You can not unlike an event that you did not like before')
             return redirect('/try1')
     else:
         return redirect('/home')
@@ -418,14 +418,14 @@ def like2(id):
         cur.execute('SELECT * FROM club_likes WHERE club_id=%s AND user_id=%s', (id,session['user_id'],))
         temp = cur.fetchone()
         if temp:
-            #flash('You already liked this club')
+            flash('You already liked this club')
             return redirect('/try2')
         else:
             cur.execute("INSERT INTO club_likes (club_id, user_id) VALUES (%s,%s)", (id, session['user_id']))
             conn.commit()
             cur.execute('SELECT * FROM clubs WHERE club_id=%s', (id,))
             temp = cur.fetchone()
-            #flash('You liked the {0} club'.format(temp['clubName']))
+            flash('You liked the {0} club'.format(temp['clubName']))
             cur.execute("""
                 UPDATE clubs
                 SET clubName = %s,
@@ -450,7 +450,7 @@ def unlike2(id):
         if temp:
             cur.execute('SELECT * FROM clubs WHERE club_id=%s', (id,))
             temp = cur.fetchone()
-            #flash('You unliked the {0} club'.format(temp['clubName']))
+            flash('You unliked the {0} club'.format(temp['clubName']))
             cur.execute('SELECT * FROM club_likes WHERE club_id=%s AND user_id=%s', (id,session['user_id'],))
             temp = cur.fetchone()
             cur.execute('DELETE FROM club_likes WHERE id = {0}'.format(temp['id']))
@@ -470,7 +470,7 @@ def unlike2(id):
             conn.commit()
             return redirect('/try2')
         else:
-            #flash('You can not unlike an event that you did not like before')
+            flash('You can not unlike an event that you did not like before')
             return redirect('/try2')
     else:
         return redirect('/home')
