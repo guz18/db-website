@@ -303,6 +303,8 @@ def delete_event(id):
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('DELETE FROM event WHERE id = {0}'.format(id))
         conn.commit()
+        cur.execute('DELETE FROM event_likes WHERE event_id = {0}'.format(id))
+        conn.commit()
         #flash('Event Removed Successfully')
         return redirect('/try1')
     else:
@@ -315,6 +317,8 @@ def delete_club(id):
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('DELETE FROM clubs WHERE club_id = {0}'.format(id))
         conn.commit()
+        cur.execute('DELETE FROM club_likes WHERE club_id = {0}'.format(id))
+        conn.commit()
         #flash('Club Removed Successfully')
         return redirect('/try2')
     else:
@@ -326,6 +330,10 @@ def delete_user(id):
         conn = mysql.connection
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('DELETE FROM users WHERE user_id = {0}'.format(id))
+        conn.commit()
+        cur.execute('DELETE FROM event_likes WHERE user_id = {0}'.format(id))
+        conn.commit()
+        cur.execute('DELETE FROM club_likes WHERE user_id = {0}'.format(id))
         conn.commit()
         #flash('User Removed Successfully')
         dropsession()
