@@ -70,7 +70,33 @@ body::after {
 .navbar a:hover {
   background-color: #000;
 }
+.abc{
+  margin-bottom: 20%;
+}
+  .row2{
+  margin-top:5%;
+  margin-left: 4%;
+}
+.row1{
+  margin-top:5%;
+  margin-left: 9%;
+}
+.row4{
+  margin-top:5%;
+  margin-left: 42%;
+}
+.row3{
+  margin-left: 40%;
 
+}
+.row5{
+  margin-top:5%;
+  margin-left: 40%;
+
+}
+.row{
+  margin-left: 1%;
+}
 .active {
   background-color: #9989b6;
 }
@@ -142,6 +168,80 @@ body::after {
         } );
          
         </script>
+
+
+<div class="row4"><h3>Top Three Events</h3></div>
+<div class="row3">
+  <div class="col-md-8">
+    <table id="" class="table table-danger" style="width:60%">
+      <thead>
+        <tr>
+          <td>Event Name</td>
+          <td>Number of Likes</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for x in last %}
+            <tr>
+              <td>{{x.event_name}}</td>
+              <td>{{x.likeNumber}}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<div class="row4"><h3>Top Three Clubs</h3></div>
+<div class="row3">
+  <div class="col-md-8">
+    <table id="" class="table table-secondary" style="width:60%">
+      <thead>
+        <tr>
+          <td>Club Name</td>
+          <td>Number of Likes</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for x in ptr %}
+            <tr>
+              <td>{{x.clubName}}</td>
+              <td>{{x.clubLikes}}</td>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<div class="row5"><h3>Student Distribution By Departments</h3></div>
+<div class="row3">
+  <div class="abc">
+  <div class="col-md-8">
+    <table id="" class="table table-warning" style="width:60%">
+      <thead>
+        <tr>
+          <td>Department</td>
+          <td>Student Number</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for x in ztr %}
+            <tr>
+              <td>{{x.department}}</td>
+              <td>{{x.number}}</td>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+</div>
+</div>
+
+
+
+
 
   <!-- Copyright -->
   <div class="text-center1" style="background-color: rgba(0, 0, 0, 0.116)">

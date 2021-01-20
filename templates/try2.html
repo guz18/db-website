@@ -47,10 +47,10 @@
         <thead>
           <tr>
             <td>Club Name</td>
-            <td>Like Number</td>
             <td>Club President</td>
             <td>Club Place</td>
             <td>Club Description</td>
+            <td>Number of Likes</td>
             <td>Action</td>
           </tr>
         </thead>
@@ -58,10 +58,10 @@
           {% for data in event %}
           <tr>
             <td>{{data.clubName}}</td>
-            <td>{{data.clubLikes}}</td>
             <td><a href="/userPage/{{data.clubPresident}}" class="btn">{{data.clubPresident}}</a></td>
             <td>{{data.club_place}}</td>
             <td>{{data.club_description}}</td>
+            <td><a href="/club_Page/{{data.club_id}}" class="btn">{{data.clubLikes}}</a></td>
             <td width="130">
               <a href="/edit2/{{data.club_id}}" class="btn btn-secondary btn-sm">edit</a>
               <a href="/delete2/{{data.club_id}}" class="btn btn-danger btn-delete btn-sm">delete</a>

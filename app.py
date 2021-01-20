@@ -37,7 +37,7 @@ def login():
                 session['username'] = user['username']
                 session['department'] = user['department']
                 session['email'] = user['email']
-                return render_template(('protected.html'))
+                return redirect('/protected')
             else:
                 #flash("Error, password or user not match")
                 return render_template('login.html')
@@ -474,18 +474,72 @@ def unlike2(id):
 def userPage(id):
     if session:
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute('SELECT * FROM users WHERE user_id = {0}'.format(id))
-        user = cur.fetchone()
         sql = "SELECT \
         event_likes.user_id AS user_id, \
         event_likes.event_id AS event_id, \
         event.event_name AS event_name \
         FROM event_likes \
         INNER JOIN event ON event_likes.event_id = event.id \
-        WHERE user_id=%s"
-        cur.execute(sql,(id,))
+        WHERE user_id={0}"
+        cur.execute('SELECT * FROM users WHERE user_id = {0}'.format(id))
+        user = cur.fetchone()
+        cur.execute(sql.format(id))
         last = cur.fetchall()
-        return render_template('user.html', user = user, last = last) 
+        sql1 = "SELECT \
+        club_likes.user_id AS user_id, \
+        club_likes.club_id AS club_id, \
+        clubs.clubName AS clubName \
+        FROM club_likes \
+        INNER JOIN clubs ON club_likes.club_id = clubs.club_id \
+        WHERE user_id={0}"
+        cur.execute(sql1.format(id))
+        club = cur.fetchall()
+        cur.execute('SELECT * FROM clubs WHERE clubPresident=%s', (id,))
+        cp = cur.fetchall()  
+        return render_template('user.html', user = user, last = last, club=club, cp=cp) 
+    else:
+        return redirect('/home')  
+
+
+@app.route('/event_Page/<string:id>', methods = ['POST','GET'])
+def eventpage(id):
+    if session:
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        sql = "SELECT \
+        event_likes.user_id AS user_id, \
+        event_likes.event_id AS event_id, \
+        users.firstName AS firstName, \
+        users.lastName AS lastName \
+        FROM event_likes \
+        INNER JOIN users ON event_likes.user_id = users.user_id \
+        WHERE event_id={0}"
+        cur.execute(sql.format(id))
+        last = cur.fetchall()
+        cur.execute('SELECT * FROM event WHERE id=%s', (id,))
+        cp = cur.fetchone()  
+        return render_template('event.html',  last = last, cp=cp) 
+    else:
+        return redirect('/home')  
+
+
+
+@app.route('/club_Page/<string:id>', methods = ['POST','GET'])
+def clubpage(id):
+    if session:
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        sql1 = "SELECT \
+        club_likes.user_id AS user_id, \
+        club_likes.club_id AS club_id, \
+        users.firstName AS firstName, \
+        users.lastName AS lastName \
+        FROM club_likes \
+        INNER JOIN users ON club_likes.user_id = users.user_id \
+        WHERE club_id={0}"
+        cur.execute(sql1.format(id))
+        club = cur.fetchall()
+        cur.execute('SELECT * FROM clubs WHERE club_id=%s', (id,))
+        cp = cur.fetchone()  
+        return render_template('club.html', club = club,cp=cp) 
     else:
         return redirect('/home')  
 
@@ -501,7 +555,14 @@ def dropsession():
 @app.route('/protected')
 def protected():
     if session:
-        return render_template('protected.html')
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute("SELECT * from event ORDER BY likeNumber DESC LIMIT 3")
+        last = cur.fetchall()
+        cur.execute("SELECT * from clubs ORDER BY clubLikes DESC LIMIT 3")
+        ptr = cur.fetchall()
+        cur.execute("SELECT department, count(*) as number from users GROUP BY department")
+        ztr = cur.fetchall()
+        return render_template('protected.html', last= last, ptr=ptr, ztr=ztr)
     else:
         return redirect('/home')
 
